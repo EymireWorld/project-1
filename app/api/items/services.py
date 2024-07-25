@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,11 +13,8 @@ async def get_items(
 ):
     stmt = select(ItemModel).offset(offset).limit(limit)
     result = await session.execute(stmt)
-    result = result.scalars()
 
-    if result != None:
-        return list(result.all())
-    return None
+    return result.scalars().all()
 
 
 async def get_item(
@@ -25,8 +23,15 @@ async def get_item(
 ):
     stmt = select(ItemModel).where(ItemModel.id == item_id)
     result = await session.execute(stmt)
+    result = result.scalar()
+    
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Item not found.'
+        )
 
-    return result.scalar()
+    return result
 
 
 async def add_item(

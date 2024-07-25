@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, status
 
 from app.dependencies import session_dep
 from app.schemas import ItemAddSchema, ItemSchema
@@ -17,7 +17,7 @@ async def get_items(
     session: session_dep,
     limit: int = Query(10, ge=5, le=100),
     offset: int = Query(0, ge=0),
-) -> list[ItemSchema] | None:
+) -> list[ItemSchema]:
     return await services.get_items(session, limit, offset)
 
 
@@ -25,11 +25,11 @@ async def get_items(
 async def get_item(
     session: session_dep,
     task_id: int
-) -> ItemSchema | None:
+) -> ItemSchema:
     return await services.get_item(session, task_id)
 
 
-@router.post('')
+@router.post('', status_code=status.HTTP_201_CREATED)
 async def add_item(
     session: session_dep,
     data: ItemAddSchema
