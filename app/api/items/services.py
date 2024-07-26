@@ -55,7 +55,7 @@ async def update_item(
     item_id: int,
     data: ItemUpdateSchema
 ) -> ItemModel:
-    stmt = select(ItemModel)\
+    stmt = select(ItemModel) \
            .where(ItemModel.id == item_id)
     result = await session.execute(stmt)
     result = result.scalar()
