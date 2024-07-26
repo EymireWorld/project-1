@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Query, status
+from fastapi import APIRouter, Query
 
 from app.dependencies import session_dep
-from app.schemas import ItemAddSchema, ItemSchema
+from app.schemas import ItemAddSchema, ItemSchema, ItemUpdateSchema
 
 from . import services
 
@@ -29,9 +29,26 @@ async def get_item(
     return await services.get_item(session, task_id)
 
 
-@router.post('', status_code=status.HTTP_201_CREATED)
+@router.post('')
 async def add_item(
     session: session_dep,
     data: ItemAddSchema
 ) -> ItemSchema:
     return await services.add_item(session, data)
+
+
+@router.put('/{item_id}')
+async def update_item(
+    session: session_dep,
+    item_id: int,
+    data: ItemUpdateSchema
+) -> ItemSchema:
+    return await services.update_item(session, item_id, data)
+
+
+@router.delete('/{item_id}')
+async def delete_item(
+    session: session_dep,
+    data: ItemAddSchema
+) -> ItemSchema:
+    return await services.delete_item(session, data)

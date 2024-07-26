@@ -16,3 +16,9 @@ class ItemAddSchema(Schema):
     name: str
     price: float = Field(ge=0)
     amount: int = Field(ge=0)
+
+
+class ItemUpdateSchema(Schema):
+    name: str | None = None
+    price: float | None = Field(None, ge=0)
+    amount: int | None = Field(None, ge=0)
