@@ -16,7 +16,7 @@ async def get_items(
            .limit(limit)
     result = await session.execute(stmt)
 
-    return result.scalars().all()
+    return result.scalars().all()  # type: ignore
 
 
 async def get_item(
@@ -72,7 +72,7 @@ async def update_item(
            .returning(ItemModel)
     result = await session.execute(stmt)
     result = result.scalar()
-    await session.execute()
+    await session.commit()
 
     return result
 
@@ -97,6 +97,6 @@ async def delete_item(
            .returning(ItemModel)
     result = await session.execute(stmt)
     result = result.scalar()
-    await session.execute()
+    await session.commit()
 
     return result

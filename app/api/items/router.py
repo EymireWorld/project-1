@@ -18,7 +18,7 @@ async def get_items(
     limit: int = Query(10, ge=5, le=100),
     offset: int = Query(0, ge=0),
 ) -> list[ItemSchema]:
-    return await services.get_items(session, limit, offset)
+    return await services.get_items(session, limit, offset)  # type: ignore
 
 
 @router.get('/{item_id}')
@@ -49,6 +49,6 @@ async def update_item(
 @router.delete('/{item_id}')
 async def delete_item(
     session: session_dep,
-    data: ItemAddSchema
+    task_id: int
 ) -> ItemSchema:
-    return await services.delete_item(session, data)
+    return await services.delete_item(session, task_id)

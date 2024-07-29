@@ -24,13 +24,15 @@ services:
 
   app:
     container_name: app_container
-    command: bash -c 'alembic upgrade head && gunicorn app.main:app --worker-class uvicorn.workers.UvicornWorker --workers 4 --bind 0.0.0.0:80'
+    command: gunicorn app.main:app --worker-class uvicorn.workers.UvicornWorker --workers 4 --bind 0.0.0.0:80
     build: .
     volumes:
       - .:/project
+      - migrations_versions_data:/project/migrations/versions
     depends_on:
       postgres:
         condition: service_healthy
 
 volumes:
   postgres_data: {}
+  migrations_versions_data: {}
