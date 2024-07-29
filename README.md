@@ -11,17 +11,21 @@ POSTGRES_PASSWORD: str
 ```
 git clone https://github.com/EymireWorld/project-1.git
 ```
-2. Start docker container
+2. Export requirements
+```
+poetry export --without-hashes -o requirements.txt
+```
+3. Start docker container
 ```
 docker compose up -d
 ```
-3. Join app shell
+4. Join app shell
 ```
 docker exec -t app sh
 ```
-4. Start migrations
+5. Start migrations
 ```
 alembic revision --autogenerate
 alembic upgrade head
 ```
-5. Enjoy)
+6. Enjoy)
